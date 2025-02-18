@@ -1,0 +1,45 @@
+@startuml
+
+entity "user" as user {
+    + id: BIGINT
+    --
+    username: VARCHAR(40)
+    password: VARCHAR(255)
+    email: VARCHAR(255)
+    email_hashed: VARCHAR(255)
+    created_at: DATETIME
+    lastupdate: DATETIME
+}
+
+entity "category" as category {
+    + id: BIGINT
+    --
+    name: VARCHAR(100)
+    userId: BIGINT
+    type: ENUM('income', 'outcome')
+}
+
+entity "defaultCategory" as defaultCategory {
+    + id: BIGINT
+    --
+    name: VARCHAR(100)
+    type: ENUM('income', 'outcome')
+}
+
+entity "transaction" as transaction {
+    + id: BIGINT
+    --
+    description: TEXT
+    userId: BIGINT
+    amount: INT UNSIGNED
+    categoryId: BIGINT
+    date: DATETIME
+    type: ENUM('income', 'outcome')
+}
+
+user ||--o| category : "has"
+category ||--o| transaction : "belongs to"
+user ||--o| transaction : "makes"
+defaultCategory ||--o| category : "maps to"
+
+@enduml
