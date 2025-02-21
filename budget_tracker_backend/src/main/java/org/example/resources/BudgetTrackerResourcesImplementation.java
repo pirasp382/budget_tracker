@@ -2,6 +2,8 @@ package org.example.resources;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 import org.example.dto.*;
 import org.example.entity.Account;
@@ -18,6 +20,7 @@ import org.example.services.validation.AccountValidation;
 import org.example.services.validation.LoginValidation;
 import org.example.services.validation.RegistrationValidation;
 import org.example.services.validation.TransactionValidation;
+import org.example.util.CategoryStorage;
 import org.example.util.TokenManager;
 
 import java.math.BigDecimal;
@@ -33,7 +36,7 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response registration(final RegistrationInput registrationInput) {
     final List<Message> errorlist = RegistrationValidation.validate(registrationInput);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserMapper.mapToUser(registrationInput);
     user.persist();
@@ -44,7 +47,7 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response login(final LoginInput loginInput) {
     final List<Message> errorlist = LoginValidation.validate(loginInput);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUsername(loginInput.getUsername());
     final List<AccountDTO> accountList =
@@ -58,7 +61,7 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response getAllAccounts(final String token) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final List<Account> accountList = AccountRepository.getAccountsByUserId(user);
@@ -71,11 +74,11 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response addAccount(final String token, final AccountDTO accountDTO) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final List<Message> errorList = AccountValidation.validate(accountDTO);
     if (!errorList.isEmpty()) {
-      return Response.ok(errorList).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorList).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Account account = AccountMapper.mapToAccount(accountDTO, user);
@@ -88,13 +91,13 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response editAccount(final String token, final Long id, final AccountDTO accountDTO) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Account account = AccountRepository.getAccountByIdAndUserId(id, user);
     if (account == null) {
       errorlist.add(Message.builder().title("Account does not exist").build());
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     if (accountDTO.getTitle() != null) {
       Logger.getAnonymousLogger().info(accountDTO.getTitle());
@@ -115,12 +118,12 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response deleteAccount(final String token, final Long id) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     if (!AccountRepository.accountExists(user, id)) {
       errorlist.add(Message.builder().title("Account does not exist").build());
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final Account account = AccountRepository.getAccountByIdAndUserId(id, user);
     account.delete();
@@ -142,7 +145,7 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response getAllTransactions(final String token) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final List<Transaction> transactionList = TransactionRepository.getAllTransactionsByUser(user);
@@ -154,13 +157,13 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response getAllTransactionByAccount(final String token, final Long accountId) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Account account = AccountRepository.getAccountByIdAndUserId(accountId, user);
     if (account == null) {
       errorlist.add(Message.builder().title("Account does not exist").build());
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final List<Transaction> transactionList =
         TransactionRepository.getAllTransactionsByUserAndAccount(user, account);
@@ -172,13 +175,13 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response getTransactionByTransactionId(final String token, final Long id) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Transaction transaction = TransactionRepository.getTransactionById(user, id);
     if (transaction == null) {
       errorlist.add(Message.builder().title("Transaction does not exist").build());
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final TransactionDTO transactionDTO = TransactionMapper.mapToTransactionDTO(transaction);
     return Response.ok(transactionDTO).build();
@@ -189,13 +192,13 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
       final String token, final TransactionDTO transactionDTO, final Long accountId) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Account account = AccountRepository.getAccountByIdAndUserId(accountId, user);
     final List<Message> errorList = TransactionValidation.valdiate(transactionDTO, account);
     if (!errorList.isEmpty()) {
-      return Response.ok(errorList).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorList).build();
     }
     final Transaction transaction = TransactionMapper.mapToTransaction(transactionDTO, account);
     transaction.persist();
@@ -212,13 +215,13 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response deleteTransaction(final String token, final long id) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Transaction transaction = TransactionRepository.getTransactionById(user, id);
     if (transaction == null) {
       errorlist.add(Message.builder().title("Transaction does not exists").build());
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final Account account = transaction.getAccount();
     if (transaction.getType() == Type.INCOME) {
@@ -236,13 +239,13 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
       final String token, final TransactionDTO transactionDTO, final Long id) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Transaction transaction = TransactionRepository.getTransactionById(user, id);
     if (transaction == null) {
       errorlist.add(Message.builder().title("Transaction does not exist").build());
-      return Response.ok(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
     final BigDecimal oldAmount = transaction.getAmount();
     final Type oldType = transaction.getType();
@@ -280,6 +283,47 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
     }
     transaction.persist();
     return Response.ok(transactionDTO).build();
+  }
+
+  public Response getAllUserCategories(final String token) {
+    final List<Message> errorlist = tokenManager.validateToken(token);
+    if (!errorlist.isEmpty()) {
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+    }
+    final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
+    final List<Category> categories = CategoryStorage.loadCategories(user.getId());
+    return Response.ok(categories).build();
+  }
+
+  public Response addCategory(final String token, final Category category) {
+    final List<Message> errorlist = tokenManager.validateToken(token);
+    if (!errorlist.isEmpty()) {
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+    }
+    final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
+    CategoryStorage.saveCategory(category, user.getId());
+    final List<Category> categories = CategoryStorage.loadCategories(user.getId());
+    return Response.ok(categories).build();
+  }
+
+  public Response deleteCategory(final String token, final String title) {
+    final List<Message> errorlist = tokenManager.validateToken(token);
+    if (!errorlist.isEmpty()) {
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+    }
+    final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
+    final List<Category> categories = CategoryStorage.deleteCategory(title, user.getId());
+    return Response.ok(categories).build();
+  }
+
+  public Response updateCategory(final String token, final UpdateCategory category, final String title) {
+    final List<Message> errorlist = tokenManager.validateToken(token);
+    if (!errorlist.isEmpty()) {
+      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+    }
+    final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
+    final List<Category> categories = CategoryStorage.updateCategory(category, title, user.getId());
+    return Response.ok(categories).build();
   }
 
   private static boolean typeMatches(final String inputType) {
