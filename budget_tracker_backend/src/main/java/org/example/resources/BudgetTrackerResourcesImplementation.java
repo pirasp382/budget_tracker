@@ -241,6 +241,10 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
     if (!errorlist.isEmpty()) {
       return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
     }
+    if (transactionDTO == null) {
+      errorlist.add(Message.builder().title("Transaction is null").build());
+      return Response.ok(errorlist).build();
+    }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Transaction transaction = TransactionRepository.getTransactionById(user, id);
     if (transaction == null) {
@@ -268,6 +272,7 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
       if (transactionDTO.getType() != null && typeMatches(transactionDTO.getType())) {
         transaction.setType(Type.valueOf(transactionDTO.getType()));
       }
+
       final BigDecimal newAmount = transaction.getAmount();
       final Type newType = transaction.getType();
 
@@ -278,11 +283,18 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
       }
     }
 
-    if (transactionDTO.getDescription() != null) {
+    if (transactionDTO.getCategory() != null
+        && TransactionValidation.categoryExists(transactionDTO.getCategory(), user.getId())) {
+      transaction.setCategory(transactionDTO.getCategory());
+    }
+
+    if (transactionDTO.getCategory() != null) {
       transaction.setDescription(transactionDTO.getDescription());
     }
+
     transaction.persist();
-    return Response.ok(transactionDTO).build();
+    final TransactionDTO newTransactionDTO = TransactionMapper.mapToTransactionDTO(transaction);
+    return Response.ok(newTransactionDTO).build();
   }
 
   public Response getAllUserCategories(final String token) {
@@ -316,7 +328,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
     return Response.ok(categories).build();
   }
 
-  public Response updateCategory(final String token, final UpdateCategory category, final String title) {
+  public Response updateCategory(
+      final String token, final UpdateCategory category, final String title) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
       return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();

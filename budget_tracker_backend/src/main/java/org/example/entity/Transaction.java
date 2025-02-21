@@ -36,6 +36,9 @@ public class Transaction extends PanacheEntityBase {
   @Column(name = "type", nullable = false)
   private Type type;
 
+  @Column(name = "category")
+  private String category;
+
   @ManyToOne
   @JoinColumn(name = "account_id", nullable = false)
   @JsonBackReference
@@ -44,5 +47,8 @@ public class Transaction extends PanacheEntityBase {
   @PrePersist
   private void onCreate() {
     date = LocalDateTime.now();
+    if(category == null){
+      category = "others";
+    }
   }
 }

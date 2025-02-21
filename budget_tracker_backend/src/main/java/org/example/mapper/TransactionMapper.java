@@ -9,13 +9,14 @@ import org.example.enums.Type;
 @UtilityClass
 public class TransactionMapper {
 
-  public Transaction mapToTransaction(final TransactionDTO transactionDTO, final Account account){
+  public Transaction mapToTransaction(final TransactionDTO transactionDTO, final Account account) {
     return Transaction.builder()
-            .description(transactionDTO.getDescription())
-            .amount(transactionDTO.getAmount())
-            .type(Type.valueOf(transactionDTO.getType()))
-            .account(account)
-            .build();
+        .description(transactionDTO.getDescription())
+        .amount(transactionDTO.getAmount())
+        .type(Type.valueOf(transactionDTO.getType()))
+        .account(account)
+        .category(transactionDTO.getCategory())
+        .build();
   }
 
   public TransactionDTO mapToTransactionDTO(final Transaction transaction) {
@@ -25,6 +26,7 @@ public class TransactionMapper {
         .amount(transaction.getAmount())
         .accontId(transaction.getAccount().getId())
         .type(transaction.getType().name())
+        .category(transaction.getCategory())
         .build();
   }
 }
