@@ -16,7 +16,7 @@ public class RegistrationValidation {
 
   public List<Message> validate(final RegistrationInput registrationInput) {
     final List<Message> errorlist = new ArrayList<>();
-    if(registrationInput == null){
+    if (registrationInput == null) {
       errorlist.add(Message.builder().title("input is null").build());
       return errorlist;
     }
@@ -31,7 +31,7 @@ public class RegistrationValidation {
       errorlist.add(Message.builder().title("Email is null").build());
     } else if (validateEMailAddressFormat(registrationInput.getEmail())) {
       errorlist.add(Message.builder().title("Email-Address is not valid").build());
-    } else if (!emailIsNotUnique(registrationInput.getEmail())) {
+    } else if (emailIsNotUnique(registrationInput.getEmail())) {
       errorlist.add(Message.builder().title("Email already exists").build());
     }
     if (valueIsNull(registrationInput.getPassword())) {
@@ -46,8 +46,10 @@ public class RegistrationValidation {
             registrationInput.getPassword(), registrationInput.getConfirmedPassword())) {
       errorlist.add(Message.builder().title("Passwords dont match").build());
     }
-    if (errorlist.isEmpty() && passwordHasWrongFormat(registrationInput.getPassword())) {
-      errorlist.add(Message.builder().title("Password has worong format").build());
+    if (!valueIsNull(registrationInput.getPassword())
+        && !valueIsNull(registrationInput.getConfirmedPassword())
+        && passwordHasWrongFormat(registrationInput.getPassword())) {
+      errorlist.add(Message.builder().title("Password has wrong format").build());
     }
     return errorlist;
   }
@@ -62,7 +64,7 @@ public class RegistrationValidation {
 
   private static boolean emailIsNotUnique(final String email) {
     final String hashedEmail = Hasher.hashValue(email);
-    return UserRepository.getUserByEmail(hashedEmail) == null;
+    return UserRepository.getUserByHashedEmail(hashedEmail) != null;
   }
 
   private static boolean validateEMailAddressFormat(final String email) {

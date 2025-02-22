@@ -21,8 +21,8 @@ public class UserRepository implements PanacheRepository<User> {
         .firstResult();
   }
 
-  public static User getUserByEmail(final String email) {
-    return User.find("select u from User u where u.email =: userParam", Map.of("userParam", email))
+  public static User getUserByHashedEmail(final String email) {
+    return User.find("select u from User u where u.hashedEmail =: userParam", Map.of("userParam", email))
         .firstResult();
   }
 
