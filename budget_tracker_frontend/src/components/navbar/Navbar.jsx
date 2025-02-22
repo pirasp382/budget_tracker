@@ -15,9 +15,9 @@ const Navbar = () => {
             <ul className={"navbar-menu"}>
                 <li className={"menu-item"} onClick={() => navigate("/")}>Overview</li>
                 <li className={"menu-item"} onClick={() => navigate("/transactions")}>Transactions</li>
-                <li className={"menu-item"}>Accounts</li>
-                <li className={"menu-item"}>Categories</li>
-                <li className={"menu-item"}>Settings</li>
+                <li className={"menu-item"} onClick={() => navigate("/accounts")}>Accounts</li>
+                <li className={"menu-item"} onClick={() => navigate("/categories")}>Categories</li>
+                <li className={"menu-item"} onClick={() => navigate("/settings")}>Settings</li>
             </ul>
             <div className={"logout"}>
                 <IoIosLogOut className={"logout-icon"} onClick={() => logout()}/>
