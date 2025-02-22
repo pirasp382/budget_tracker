@@ -2,8 +2,6 @@ package org.example.resources;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.HeaderParam;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 import org.example.dto.*;
 import org.example.entity.Account;
@@ -36,7 +34,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response registration(final RegistrationInput registrationInput) {
     final List<Message> errorlist = RegistrationValidation.validate(registrationInput);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserMapper.mapToUser(registrationInput);
     user.persist();
@@ -47,7 +46,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response login(final LoginInput loginInput) {
     final List<Message> errorlist = LoginValidation.validate(loginInput);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUsername(loginInput.getUsername());
     final List<AccountDTO> accountList =
@@ -61,7 +61,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response getAllAccounts(final String token) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final List<Account> accountList = AccountRepository.getAccountsByUserId(user);
@@ -74,7 +75,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response addAccount(final String token, final AccountDTO accountDTO) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final List<Message> errorList = AccountValidation.validate(accountDTO);
     if (!errorList.isEmpty()) {
@@ -175,7 +177,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response getTransactionByTransactionId(final String token, final Long id) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Transaction transaction = TransactionRepository.getTransactionById(user, id);
@@ -192,13 +195,15 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
       final String token, final TransactionDTO transactionDTO, final Long accountId) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Account account = AccountRepository.getAccountByIdAndUserId(accountId, user);
     final List<Message> errorList = TransactionValidation.valdiate(transactionDTO, account);
     if (!errorList.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorList).build();
+      final UserOutput userOutput = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(userOutput).build();
     }
     final Transaction transaction = TransactionMapper.mapToTransaction(transactionDTO, account);
     transaction.persist();
@@ -215,13 +220,15 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response deleteTransaction(final String token, final long id) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final Transaction transaction = TransactionRepository.getTransactionById(user, id);
     if (transaction == null) {
       errorlist.add(Message.builder().title("Transaction does not exists").build());
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput userOutput = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(userOutput).build();
     }
     final Account account = transaction.getAccount();
     if (transaction.getType() == Type.INCOME) {
@@ -239,7 +246,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
       final String token, final TransactionDTO transactionDTO, final Long id) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     if (transactionDTO == null) {
       errorlist.add(Message.builder().title("Transaction is null").build());
@@ -249,7 +257,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
     final Transaction transaction = TransactionRepository.getTransactionById(user, id);
     if (transaction == null) {
       errorlist.add(Message.builder().title("Transaction does not exist").build());
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput userOutput = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(userOutput).build();
     }
     final BigDecimal oldAmount = transaction.getAmount();
     final Type oldType = transaction.getType();
@@ -300,7 +309,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response getAllUserCategories(final String token) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final List<Category> categories = CategoryStorage.loadCategories(user.getId());
@@ -310,7 +320,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response addCategory(final String token, final Category category) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     CategoryStorage.saveCategory(category, user.getId());
@@ -321,7 +332,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
   public Response deleteCategory(final String token, final String title) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final List<Category> categories = CategoryStorage.deleteCategory(title, user.getId());
@@ -332,7 +344,8 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
       final String token, final UpdateCategory category, final String title) {
     final List<Message> errorlist = tokenManager.validateToken(token);
     if (!errorlist.isEmpty()) {
-      return Response.status(Response.Status.UNAUTHORIZED).entity(errorlist).build();
+      final UserOutput user = UserOutput.builder().errorlist(errorlist).build();
+      return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
     final User user = UserRepository.getUserByUserid(tokenManager.getUserId(token));
     final List<Category> categories = CategoryStorage.updateCategory(category, title, user.getId());
