@@ -1,0 +1,16 @@
+
+.logo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logo img{
+    width: 32px;
+    height: 32px;
+}
+
+.logo .name{
+    font-weight: bold;
+    font-size: 20px;
+}
