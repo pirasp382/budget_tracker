@@ -21,10 +21,7 @@ public class UserOutput {
       required = true)
   private String username;
 
-  @Schema(
-          description = "List of all User Accounts",
-          implementation = List.class
-  )
+  @Schema(description = "List of all User Accounts", implementation = List.class)
   private List<AccountDTO> accountDTOList;
 
   @Schema(
@@ -33,4 +30,6 @@ public class UserOutput {
       examples = {"max.mustermann"},
       required = true)
   private String token;
+
+  @Builder.Default private List<Message> errorlist = List.of();
 }
