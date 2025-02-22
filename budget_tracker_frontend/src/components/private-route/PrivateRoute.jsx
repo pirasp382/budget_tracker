@@ -5,7 +5,7 @@ export const PrivateRoute = ({children, isLoggedIn}) => {
     if (isLoggedIn === null) {
         return <div>Logging in...</div>
     }
-    return isLoggedIn ? children : <Navigate to={"/"}/>
+    return isLoggedIn ? children : <Navigate to={"/login"}/>
 }
 
 PrivateRoute.propTypes = {
