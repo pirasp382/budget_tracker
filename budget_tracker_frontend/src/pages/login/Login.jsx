@@ -36,9 +36,7 @@ const Login = ({setIsLoggedIn}) => {
         })
             .then((response) => response.data)
             .then((data) =>
-                data["errorlist"].length === 0
-                    ? login_success(data)
-                    : login_error(data["errorlist"]),
+                login_success(data),
             )
             .catch((error) => {
                 if (error.response && error.response.status === 401) {
@@ -51,7 +49,7 @@ const Login = ({setIsLoggedIn}) => {
     }
 
     return (<div className={"login"}>
-        {error && <PopUpContainer messenges={error}/> }
+        {error && <PopUpContainer messenges={error}/>}
         <form onSubmit={submit}>
             <header>
                 <div className={"login-title"}>
