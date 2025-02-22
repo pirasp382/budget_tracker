@@ -1,0 +1,23 @@
+.header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 1% 5% 2% 5%;
+}
+
+.navbar{
+    display: flex;
+    flex-direction: row;
+}
+
+.title{
+    padding-top: 2%;
+}
+
+.greetings{
+    font-size: 34px;
+}
+
+.sub-title{
+    padding-top: 1%;
+    opacity: .6;
+}
