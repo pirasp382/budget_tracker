@@ -1,0 +1,41 @@
+.transaction {
+    display: grid;
+    grid-template-columns: 50px 2fr 2fr 3fr 2fr;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.transaction:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.category{
+    padding-left: 15%;
+}
+
+.transaction, .list-header {
+    box-sizing: border-box;
+}
+
+.amount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 33%;
+    border-radius: 20px;
+    padding: 10px 10px 10px 20px;
+    margin-left: 20px;
+}
+
+.expenses {
+    color: var(--error);
+    background-color: #FFCCCC;
+}
+
+.income {
+    background-color: #CBF9FF;
+    color: #1a73e8;
+}

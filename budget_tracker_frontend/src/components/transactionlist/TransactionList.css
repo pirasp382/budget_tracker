@@ -1,0 +1,24 @@
+
+.liste {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: solid 1px #ccc;
+    border-radius: 10px;
+}
+
+.list-header {
+    display: grid;
+    grid-template-columns: 50px 2fr 2fr 2fr 2fr;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    border-bottom: 2px solid #ccc;
+    padding: 10px 0;
+    background-color: #DBDBDB;
+    border-radius: 10px;
+}
+
+.icon:hover{
+    cursor: pointer;
+}
