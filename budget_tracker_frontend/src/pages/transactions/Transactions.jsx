@@ -26,8 +26,8 @@ const Transactions = () => {
             },
         })
             .then(response => response.data)
-            .then(data=>{
-                console.log(data);
+            .then(data => {
+                console.log(data)
                 return data
             })
             .then(data => setTransactions(data))
@@ -39,10 +39,15 @@ const Transactions = () => {
             <Header username={user}/>
             <div className={"transaction-content"}>
                 <div className={"head"}>
-                    Transaction History
+                    <div>
+                        Transaction History
+                    </div>
+                    <div className={"buttons"}>
+                        <button >hello</button>
+                    </div>
                 </div>
                 <div className={"table"}>
-                    { <TransactionList transactions={transactions}/>}
+                    {<TransactionList transactions={transactions}/>}
                 </div>
             </div>
         </div>

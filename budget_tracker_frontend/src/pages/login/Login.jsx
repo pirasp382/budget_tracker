@@ -72,7 +72,7 @@ const Login = ({setIsLoggedIn}) => {
                 <label htmlFor="psw"><b>Password</b></label>
                 <div className="password-container">
                     <input
-                        type={showPassword ? "text" : "password"} // Dynamischer Typ
+                        type={showPassword ? "text" : "password"}
                         placeholder="Enter Password"
                         name="psw"
                         required
@@ -86,7 +86,7 @@ const Login = ({setIsLoggedIn}) => {
                         {showPassword ? "Hide" : "Show"}
                     </button>
                 </div>
-                <button type="submit" disabled={loading}>
+                <button className={"submit"} type="submit" disabled={loading}>
                     {loading ? "Logging in..." : "Login"}
                 </button>
                 <label>

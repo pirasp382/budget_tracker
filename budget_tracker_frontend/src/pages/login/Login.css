@@ -31,13 +31,16 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
-button {
-    background-color: var(--third-color);
+button{
+    background-color: #28a745;
     color: var(--white);
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
+}
+
+.submit {
     width: 100%;
 }
 
