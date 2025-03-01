@@ -23,12 +23,10 @@ const Transactions = () => {
         getAllTransactions("date", false)
     }, [])
 
-
     function openEditModal(id) {
         setTransaction(transactions.find(item => item.id === id))
         setShowModal(true)
     }
-
 
     useEffect(() => {
         setUser(localStorage.getItem("username"))
@@ -46,12 +44,11 @@ const Transactions = () => {
         })
             .then(response => response.data)
             .then(data => setCategories(data))
+            .catch(error => setError(error.response.data.errorlist))
     }
 
     function saveEdits(transaction) {
         const url = `http://localhost:8000/transaction/${transaction.id}`
-        console.clear()
-        console.log(transaction)
         const token = localStorage.getItem("jwt")
         axios.put(url, {
             ...transaction,
@@ -61,7 +58,7 @@ const Transactions = () => {
             },
         })
             .then(response => response.data)
-            .then(()=>getAllTransactions(sortParam, direction))
+            .then(() => getAllTransactions(sortParam, direction))
             .catch(error => setError(error.response.data.errorlist))
     }
 
@@ -85,8 +82,6 @@ const Transactions = () => {
     function addNewTransaction(transaction, account_id) {
         const url = `http://localhost:8000/transaction?accountId=${account_id}`
         const token = localStorage.getItem("jwt")
-        console.clear()
-        console.log(transaction)
         axios.post(url, {
             ...transaction,
         }, {
@@ -154,8 +149,8 @@ const Transactions = () => {
                 </div>
                 <div className={"table"}>
                     <TransactionList setDirection={setDirection} setSortParam={setSortParam} selected={selected}
-                                      setSelected={setSelected} openEditModal={openEditModal}
-                                      transactions={transactions} getAllTransactions={getAllTransactions}/>
+                                     setSelected={setSelected} openEditModal={openEditModal}
+                                     transactions={transactions} getAllTransactions={getAllTransactions}/>
                 </div>
             </div>
         </div>

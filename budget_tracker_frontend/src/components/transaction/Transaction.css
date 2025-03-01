@@ -12,7 +12,7 @@
 }
 
 .inner .amount {
-    justify-content: flex-end; /* Rechtsbündig für Konsistenz */
+    justify-content: flex-end;
 }
 
 
@@ -24,7 +24,7 @@
     display: grid;
     grid-template-columns: 2fr 2fr 2fr 2fr;
     width: 100%;
-    padding: 5px 0; /* Weniger Padding, vorher: 10px 0 0 20px */
+    padding: 5px 0;
 }
 
 

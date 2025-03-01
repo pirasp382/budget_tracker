@@ -26,7 +26,6 @@ export default function SideModal({isOpen, accounts = [], categories = [], addTr
             setTtype(transaction.type)
             setTamount(transaction.amount)
             setCategory(transaction.category)
-            console.log(transaction)
             const name = getAccountByName(transaction.accountTitle)
             setAccount(name ? name.title : "")
 
@@ -63,8 +62,10 @@ export default function SideModal({isOpen, accounts = [], categories = [], addTr
         <div className="transaction-form">
             <div className={"upper"}>
                 <div className={"transaction-title"}>
-                    <p className={"title"}>Add Transaction</p>
-                    <p className={"sub-title"}>Add a new Transaction</p>
+                    {transaction ? <p className={"title"}>Edit Transaction</p> :
+                        <p className={"title"}>Add Transaction</p>}
+                    {transaction ? <p className={"sub-title"}>Edit the Transaction</p> :
+                        <p className={"sub-title"}>Add a new Transaction</p>}
                 </div>
                 <div className={"close"} onClick={isOpen}><AiOutlineCloseCircle/></div>
             </div>
