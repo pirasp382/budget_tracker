@@ -3,12 +3,12 @@ import Logo from "../logo/Logo"
 import PropTypes from "prop-types"
 import Navbar from "../navbar/Navbar"
 
-const Header = ({username}) => {
+const Header = ({username, site}) => {
     return (
         <div className={"header"}>
             <div className={"navbar"}>
                 <Logo/>
-                <Navbar/>
+                <Navbar site={site}/>
             </div>
             <div className={"title"}>
                 <div className={"greetings"}>
