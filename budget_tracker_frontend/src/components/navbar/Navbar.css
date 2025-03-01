@@ -23,6 +23,13 @@
     background-color: rgba(108, 117, 125, .3);
 }
 
+.menu-item.active {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
 .logout {
     margin-left: auto;
     cursor: pointer;
