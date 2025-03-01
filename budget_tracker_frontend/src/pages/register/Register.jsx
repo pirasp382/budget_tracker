@@ -108,7 +108,7 @@ function Register({setIsLoggedIn}) {
     return (
         <div className={"register"}>
             {responseError && <PopUpContainer messenges={responseError}/>}
-            <form onSubmit={submit}>
+            <form className={"form"} onSubmit={submit}>
                 <div className={"container"}>
                     <label htmlFor="uname"><b>Username</b></label>
                     <input type="text" placeholder="Enter Username" name="uname" required
