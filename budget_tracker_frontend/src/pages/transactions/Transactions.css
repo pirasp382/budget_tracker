@@ -8,6 +8,25 @@
 }
 
 .head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     font-size: 24px;
     font-weight: bold;
+}
+
+.buttons{
+    right: 0;
+}
+
+.buttons button{
+    border-radius: 12px;
+    margin-left: 10px;
+    background-color: #28a745;
+}
+
+.buttons .delete-button{
+    display: flex;
+    justify-content: end;
 }

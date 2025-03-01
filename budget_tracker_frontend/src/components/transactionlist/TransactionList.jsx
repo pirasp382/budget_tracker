@@ -4,32 +4,71 @@ import Transaction from "../transaction/Transaction"
 import PropTypes from "prop-types"
 import {useState} from "react"
 
-const TransactionList = ({transactions}) => {
+const TransactionList = ({
+                             transactions,
+                             getAllTransactions,
+                             setSortParam,
+                             setDirection,
+                             selected,
+                             setSelected,
+                             openEditModal,
+                         }) => {
+    const [sortConfig, setSortConfig] = useState({key: "date", ascending: true})
 
-    const [checked, setChecked] = useState(false)
+    const allSelected = selected.length === transactions.length && transactions.length > 0
 
     const checkHandler = () => {
-        setChecked(!checked)
+        if (allSelected) {
+            setSelected([])
+        } else {
+            setSelected(transactions.map(t => t.id))
+        }
+    }
+
+    const handleSort = (key) => {
+        setSortConfig(prev => {
+            const isAscending = prev.key === key ? !prev.ascending : true
+            setSortParam(key)
+            setDirection(isAscending)
+            getAllTransactions(key, isAscending)
+            return {key, ascending: isAscending}
+        })
     }
 
     return (
         <div className={"liste"}>
             <div className={"list-header"}>
-                <input type={"checkbox"} checked={checked} onChange={checkHandler}/>
-                <p>Date <LuArrowUpDown className={"icon"}/></p>
-                <p>Category <LuArrowUpDown className={"icon"}/></p>
-                <p>Amount <LuArrowUpDown className={"icon"}/></p>
-                <p>Account <LuArrowUpDown className={"icon"}/></p>
+                <input type={"checkbox"} checked={allSelected} onChange={checkHandler}/>
+                {["date", "category", "account", "amount"].map((key) => (
+                    <p key={key} className={"sort"} onClick={() => handleSort(key)}>
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                        <LuArrowUpDown
+                            className={`icon ${sortConfig.key === key ? (sortConfig.ascending ? "asc" : "desc") : ""}`}/>
+                    </p>
+                ))}
+                <p></p>
             </div>
-            {transactions.map(item => <Transaction id={item.id} type={item.type} date={item.date}
-                                                   category={item.category} accountTitle={item.accontTitle}
-                                                   amount={item.amount} isChecked={checked}/>)}
+            {transactions.map(item => (
+                <Transaction
+                    key={item.id}
+                    id={item.id}
+                    type={item.type}
+                    date={item.date}
+                    category={item.category}
+                    accountTitle={item.accountTitle}
+                    amount={item.amount}
+                    selected={selected}
+                    setSelected={setSelected}
+                    openEditModal={openEditModal}
+                />
+            ))}
         </div>
     )
 }
 
 TransactionList.propTypes = {
     transactions: PropTypes.array.isRequired,
+    getAllTransactions: PropTypes.func.isRequired,
 }
 
 export default TransactionList

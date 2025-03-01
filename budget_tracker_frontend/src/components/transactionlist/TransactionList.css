@@ -14,11 +14,14 @@
     gap: 10px;
     font-weight: bold;
     border-bottom: 2px solid #ccc;
-    padding: 10px 0;
+    padding: 5px 0;
     background-color: #DBDBDB;
     border-radius: 10px;
+    height: 40px;
 }
 
-.icon:hover{
+
+
+.sort:hover{
     cursor: pointer;
 }
