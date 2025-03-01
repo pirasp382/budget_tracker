@@ -1,0 +1,81 @@
+.account-form {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 25%;
+    height: 100vh;
+    background: white;
+    padding: 20px;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #ddd;
+}
+
+.account-form .upper{
+    display: flex;
+}
+
+.account-form .close{
+    margin-left: 50%;
+    font-size: 24px;
+}
+
+.account-form .close:hover{
+    cursor: pointer;
+}
+
+.account-form h2 {
+    margin-bottom: 10px;
+}
+
+.account-form .title{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.account-form form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-bottom: 50px;
+    border: none;
+}
+
+.account-form label {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.account-option{
+    background-color: var(--white);
+    min-width: 50%;
+}
+
+
+.account-form select {
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.account-form button {
+    background: var(--primary-color);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: auto;
+}
+
+.account-form button:hover {
+    background: darkblue;
+}
+
+.account-form textarea{
+    resize: none;
+    border-color: black;
+}

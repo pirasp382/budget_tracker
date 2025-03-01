@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./AmountInput.css";
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 
-const AmountInput = ({ value = null, onChange, setType }) => {
+const AmountInput = ({ value = null, onChange, setType, isDisabled}) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [isNegative, setIsNegative] = useState(value < 0);
     const [inputValue, setInputValue] = useState(value !== null ? Math.abs(value).toFixed(2) : "");
@@ -57,6 +57,7 @@ const AmountInput = ({ value = null, onChange, setType }) => {
                     placeholder="0.00"
                     className="amount-input-field"
                     required
+                    disabled={isDisabled}
                 />
                 <div
                     className={`icon-container ${isNegative ? "negative" : "positive"}`}
