@@ -1,48 +1,39 @@
 import PropTypes from "prop-types"
 import {useState} from "react"
 import {useNavigate} from "react-router-dom"
-import axios from "axios"
 import "./Login.css"
 import PopUpContainer from "../../components/pop-up/PopUpContainer"
+import {loginAPICall} from "../../services/LoginServices"
+import {useDispatch, useSelector} from "react-redux"
+import {setErrorList} from "../../redux/actions"
 
 const Login = ({setIsLoggedIn}) => {
 
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
-    const [error, setError] = useState()
+    const error = useSelector((state)=>state.errorLists.errorList)
     const [loading, setLoading] = useState()
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
-
+    const dispatch = useDispatch()
     function login_success(data) {
         localStorage.setItem("username", data["username"])
         localStorage.setItem("jwt", data["token"])
-        setError("")
+        localStorage.setItem("accounts", JSON.stringify(data.accountDTOList))
         setIsLoggedIn(true)
         navigate("/")
-    }
-
-    function login_error(errorlist) {
-        setError(errorlist)
     }
 
     function submit(e) {
         e.preventDefault()
         setLoading(true)
-        const login_url = "http://localhost:8000/login"
-        axios.post(login_url, {
-            username: username,
-            password: password,
-        })
-            .then((response) => response.data)
+        loginAPICall(username, password)
             .then((data) =>
                 login_success(data),
             )
-            .catch((error) => {
-                if (error.response && error.response.status === 401) {
-                    setError(error.response.data.errorlist)
-                } else {
-                    setError(error)
+            .catch((errorResponse) => {
+                if (errorResponse.response && errorResponse.response.status === 401) {
+                    dispatch(setErrorList(errorResponse.response.data.errorlist))
                 }
             })
             .finally(() => setLoading(false))
