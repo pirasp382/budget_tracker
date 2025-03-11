@@ -1,0 +1,23 @@
+.category {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    padding-left: 0;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.category-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    padding: 5px 0 5px 20px;
+}
+
+.category:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.category input {
+    margin-left: 20px;
+}
