@@ -21,3 +21,22 @@
     padding-top: 1%;
     opacity: .6;
 }
+
+.filters{
+    display: flex;
+    align-items: center;
+}
+
+.filters select{
+    background-color: var(--third-color);
+    border: none;
+    color: var(--white);
+    font-size: 12px;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border-radius: 10px;
+}
+
+.filters select:active{
+    background-color: red;
+}
