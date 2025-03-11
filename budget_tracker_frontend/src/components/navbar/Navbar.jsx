@@ -1,14 +1,10 @@
 import "./Navbar.css"
 import {useNavigate} from "react-router-dom"
 import {IoIosLogOut} from "react-icons/io"
+import {logout} from "../../services/logoutService"
 
 const Navbar = ({site}) => {
     const navigate = useNavigate()
-
-    const logout = () => {
-        localStorage.clear()
-        navigate("/login")
-    }
 
     return (
         <div className={"navbar-items"}>
@@ -20,7 +16,7 @@ const Navbar = ({site}) => {
                 <li className={`menu-item ${site === "settings" ? "active" : ""}`} onClick={() => navigate("/settings")}>Settings</li>
             </ul>
             <div className={"logout"}>
-                <IoIosLogOut className={"logout-icon"} onClick={() => logout()}/>
+                <IoIosLogOut className={"logout-icon"} onClick={() => logout(navigate)}/>
             </div>
         </div>
     )
