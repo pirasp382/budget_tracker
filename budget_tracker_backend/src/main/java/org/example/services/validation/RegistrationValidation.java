@@ -59,7 +59,7 @@ public class RegistrationValidation {
   }
 
   private static boolean usernameIsTooShort(final String username) {
-    return username.length() < 5;
+    return username.length() < 3;
   }
 
   private static boolean emailIsNotUnique(final String email) {

@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Sort;
 import lombok.experimental.UtilityClass;
 import org.example.entity.Account;
 import org.example.entity.User;
@@ -11,6 +12,13 @@ import java.util.Map;
 
 @UtilityClass
 public class AccountRepository implements PanacheRepository<Account> {
+
+  public Account getAccountByUserAndTitle(final String title, final User user) {
+    return Account.find(
+            "select a from Account a where a.user =: userParam and a.title =: titleParam",
+            Map.of("userParam", user, "titleParam", title))
+        .firstResult();
+  }
 
   public Account getAccountByIdAndUserId(final Long id, final User user) {
     return Account.find(
@@ -27,9 +35,12 @@ public class AccountRepository implements PanacheRepository<Account> {
         != null;
   }
 
-  public List<Account> getAccountsByUserId(final User user) {
+  public List<Account> getAccountsByUserId(
+      final User user, final String sortValue, final boolean direction, final Account account) {
     return Account.find(
-            "select a from Account a where a.user =: accountParam", Map.of("accountParam", user))
+            "select a from Account a where a.user =: accountParam ",
+            Sort.by(sortValue, getSortDirection(direction)),
+            Map.of("accountParam", user))
         .list();
   }
 
@@ -43,5 +54,17 @@ public class AccountRepository implements PanacheRepository<Account> {
     Account.update(
         "update Account a set a.balance = a.balance -: amountParam where a =: accountParam",
         Map.of("amountParam", amount, "accountParam", account));
+  }
+
+  public BigDecimal getBalanceOfAccounts(final User user) {
+    return Account.find(
+            "select sum(a.balance) from Account a where a.user =: userParam",
+            Map.of("userParam", user))
+        .project(BigDecimal.class)
+        .firstResult();
+  }
+
+  private Sort.Direction getSortDirection(final boolean direction) {
+    return direction ? Sort.Direction.Ascending : Sort.Direction.Descending;
   }
 }

@@ -34,7 +34,7 @@ public class User extends PanacheEntityBase {
       required = true)
   private String username;
 
-  @Column(name = "email", nullable = false)
+  @Column(name = "email", nullable = false, unique = true)
   @Schema(
       description = "The email address of the user",
       examples = {"max.mustermann@example.com"},

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.example.enums.Type;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -31,13 +32,16 @@ public class Transaction extends PanacheEntityBase {
   private BigDecimal amount;
 
   @Column(name = "date", nullable = false)
-  private LocalDateTime date;
+  private LocalDate date;
 
   @Column(name = "type", nullable = false)
   private Type type;
 
   @Column(name = "category")
   private String category;
+
+  @Column(name = "created_date")
+  private LocalDateTime createdDate;
 
   @ManyToOne
   @JoinColumn(name = "account_id", nullable = false)
@@ -46,9 +50,24 @@ public class Transaction extends PanacheEntityBase {
 
   @PrePersist
   private void onCreate() {
-    date = LocalDateTime.now();
-    if(category == null){
+    date = (date == null) ? LocalDate.now() : date;
+    createdDate = LocalDateTime.now();
+    if (category == null) {
       category = "others";
+    }
+    if (type == Type.EXPENSES && amount.compareTo(BigDecimal.ZERO) > 0) {
+      amount = amount.negate();
+    } else if (type == Type.INCOME && amount.compareTo(BigDecimal.ZERO) < 0) {
+      amount = amount.abs();
+    }
+  }
+
+  @PreUpdate
+  private void inUpdate() {
+    if (type == Type.EXPENSES && amount.compareTo(BigDecimal.ZERO) > 0) {
+      amount = amount.negate();
+    } else if (type == Type.INCOME && amount.compareTo(BigDecimal.ZERO) < 0) {
+      amount = amount.abs();
     }
   }
 }

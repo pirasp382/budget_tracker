@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -31,8 +32,9 @@ public class CategoryStorage {
     try {
       final List<Category> liste =
           List.of(
-              Category.builder().title("rent").build(),
-              Category.builder().title("grocery").build(),
+              Category.builder().title("rent").color("#FF9800").build(),
+              Category.builder().title("grocery").color("#4CAF50").build(),
+              Category.builder().title("salary").color("#2196F3").build(),
               Category.builder().title("others").build());
       Files.createDirectories(filePath.getParent());
       Files.createFile(filePath);
@@ -49,6 +51,15 @@ public class CategoryStorage {
     } catch (final IOException exception) {
       Logger.getAnonymousLogger().info("error");
     }
+  }
+
+  public static String getColorByTitle(final String title, final Long userId) {
+    return loadCategories(userId).stream()
+        .filter(item -> item.getTitle().equals(title))
+        .map(Category::getColor)
+        .findFirst()
+        .orElseThrow(
+            () -> new NoSuchElementException("Keine Kategorie mit Titel: " + title + " gefunden"));
   }
 
   public static List<Category> loadCategories(final Long userId) {
@@ -87,7 +98,6 @@ public class CategoryStorage {
       tempCategory.setDescription(category.getDescription());
     }
     if (category.getColor() != null) {
-      System.out.println(category.getColor());
       tempCategory.setColor(category.getColor());
     }
     if (category.getIcon() != null) {

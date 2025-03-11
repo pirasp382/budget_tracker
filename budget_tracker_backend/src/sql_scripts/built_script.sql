@@ -1,4 +1,4 @@
-USE budgettracker;
+USE exampledb;
 
 DROP TABLE if EXISTS `transaction`;
 drop table if exists account;
@@ -18,7 +18,7 @@ create table account
 (
     id          bigint auto_increment primary key,
     title       varchar(100) not null,
-    balance     decimal      not null,
+    balance     DECIMAL(10,2)      not null,
     description text,
     user_id     BIGINT       NOT null,
     created_at  datetime     not null default current_timestamp,
@@ -30,9 +30,11 @@ CREATE TABLE `transaction`
 (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     `description` TEXT,
-    amount        decimal      NOT NULL,
-    `date`        DATETIME NOT NULL           DEFAULT current_timestamp,
-    account_id    bigint   not null,
+    amount        DECIMAL(10,2)               NOT NULL,
+    `date`        DATE                        NOT NULL DEFAULT current_timestamp,
+    created_date	DATETIME							NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    account_id    bigint                      not null,
     type          enum ('INCOME', 'EXPENSES') NOT NULL default 'INCOME',
+    `category`		VARCHAR(100) 						NOT NULL DEFAULT 'others',
     foreign key (account_id) references account (id)
 );

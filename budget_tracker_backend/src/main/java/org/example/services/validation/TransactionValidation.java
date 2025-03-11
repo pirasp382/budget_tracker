@@ -11,6 +11,7 @@ import org.example.util.CategoryStorage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 @UtilityClass
 public class TransactionValidation {
@@ -21,18 +22,26 @@ public class TransactionValidation {
       errorlist.add(Message.builder().title("Transaction is null").build());
       return errorlist;
     }
-    if (account == null) {
+    if (valueIsNull(account)) {
       errorlist.add(Message.builder().title("Account does not exist").build());
       return errorlist;
+    }
+    if (valueIsNull(transactionDTO.getAmount())) {
+      errorlist.add(Message.builder().title("Amount is null").build());
     }
     if (!typeIsValid(transactionDTO.getType())) {
       errorlist.add(Message.builder().title("Type is not valide").build());
     }
-    if (errorlist.isEmpty() && transactionDTO.getCategory() !=null
+    if (errorlist.isEmpty()
+        && transactionDTO.getCategory() != null
         && !categoryExists(transactionDTO.getCategory(), account.getUser().getId())) {
       errorlist.add(Message.builder().title("Category does not exists").build());
     }
     return errorlist;
+  }
+
+  private boolean valueIsNull(final Object object) {
+    return object == null;
   }
 
   private boolean typeIsValid(final String type) {

@@ -6,6 +6,8 @@ import org.example.entity.Account;
 import org.example.entity.Transaction;
 import org.example.enums.Type;
 
+import java.math.BigDecimal;
+
 @UtilityClass
 public class TransactionMapper {
 
@@ -14,6 +16,7 @@ public class TransactionMapper {
         .description(transactionDTO.getDescription())
         .amount(transactionDTO.getAmount())
         .type(Type.valueOf(transactionDTO.getType()))
+        .date(transactionDTO.getDate())
         .account(account)
         .category(transactionDTO.getCategory())
         .build();
@@ -24,7 +27,8 @@ public class TransactionMapper {
         .id(transaction.getId())
         .description(transaction.getDescription())
         .amount(transaction.getAmount())
-        .accontId(transaction.getAccount().getId())
+        .accountTitle(transaction.getAccount().getTitle())
+        .date(transaction.getDate())
         .type(transaction.getType().name())
         .category(transaction.getCategory())
         .build();

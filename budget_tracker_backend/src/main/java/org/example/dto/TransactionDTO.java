@@ -8,6 +8,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.example.enums.Type;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -21,12 +23,13 @@ public class TransactionDTO {
       description = "description of the transaction",
       implementation = String.class,
       examples = {"rent"})
-  private String description;
+  @Builder.Default
+  private String description = "";
 
   @Schema(
       description = "transaction amount",
       implementation = BigDecimal.class,
-      examples = {"123.45"},
+      examples = {"123.45", "-123.45"},
       required = true)
   private BigDecimal amount;
 
@@ -43,5 +46,15 @@ public class TransactionDTO {
       examples = {"rent", "groceries", "others"})
   private String category;
 
-  private long accontId;
+  @Schema(
+      description = "Accountname of the transaction",
+      implementation = String.class,
+      examples = {"BankAccount"})
+  private String accountTitle;
+
+  @Schema(
+      description = "timestamp of the transaction",
+      implementation = LocalDateTime.class,
+      examples = {"2025-02-18T12:09:21"})
+  private LocalDate date;
 }

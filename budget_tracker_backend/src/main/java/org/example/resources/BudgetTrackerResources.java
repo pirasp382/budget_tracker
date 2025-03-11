@@ -53,71 +53,12 @@ public interface BudgetTrackerResources {
       content = @Content(schema = @Schema(type = SchemaType.ARRAY, implementation = List.class)))
   Response login(final LoginInput loginInput);
 
-  @Path("/account")
+  @Path("/userData")
   @GET
-  Response getAllAccounts(@HeaderParam("Authorization") final String token);
-
-  @Path("/account")
-  @POST
-  Response addAccount(
-      @HeaderParam("Authorization") final String token, final AccountDTO accountDTO);
-
-  @Path("/account/{id}")
-  @PUT
-  Response editAccount(
-      @HeaderParam("Authorization") final String token,
-      @PathParam("id") final Long id,
-      final AccountDTO accountDTO);
-
-  @Path("/account/{id}")
-  @DELETE
-  Response deleteAccount(
-      @HeaderParam("Authorization") final String token, @PathParam("id") final Long id);
-
-  @Path("/transaction")
-  @GET
-  Response getTransactions(
-      @HeaderParam("Authorization") final String token,
-      @QueryParam("accountId") Long accountId,
-      @QueryParam("transactionId") Long transactionId);
-
-  @Path("/transaction")
-  @POST
-  Response addTransaction(
-      @HeaderParam("Authorization") final String token,
-      final TransactionDTO transactionDTO,
-      @QueryParam("accountId") final Long accountId);
-
-  @Path("/transaction/{id}")
-  @DELETE
-  Response deleteTransaction(
-      @HeaderParam("Authorization") final String token, @PathParam("id") final long id);
-
-  @Path("/transaction/{id}")
-  @PUT
-  Response editTransaction(
-      @HeaderParam("Authorization") final String token,
-      final TransactionDTO transactionDTO,
-      @PathParam("id") final Long id);
-
-  @Path("/category")
-  @GET
-  Response getAllUserCategories(@HeaderParam("Authorization") final String token);
-
-  @Path("/category")
-  @POST
-  Response addCategory(@HeaderParam("Authorization") final String token, final Category category);
-
-  @Path("/category")
-  @DELETE
-  Response deleteCategory(
-      @HeaderParam("Authorization") final String token, @QueryParam("title") final String title);
-
-  @Path("/category")
-  @PUT
-  Response updateCategory(@HeaderParam("Authorization") final String token, final UpdateCategory category, @QueryParam("title") final String title);
+  Response getUserData(@HeaderParam("Authorization") final String token);
 
   @Path("/hello")
+  @Produces(MediaType.APPLICATION_JSON)
   @GET
   Response hello();
 }

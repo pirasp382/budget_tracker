@@ -9,6 +9,7 @@ import org.example.util.Encryption;
 import org.example.util.Hasher;
 import org.example.util.TokenManager;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @UtilityClass
@@ -34,6 +35,22 @@ public class UserMapper {
     return UserOutput.builder()
         .username(user.getUsername())
         .accountDTOList(accountDTOList)
+        .token(TokenManager.createToken(user))
+        .build();
+  }
+
+  public UserOutput mapToUserOutput(
+      final User user,
+      final List<AccountDTO> accountDTOList,
+      final BigDecimal income,
+      final BigDecimal expenses,
+      final BigDecimal balance) {
+    return UserOutput.builder()
+        .username(user.getUsername())
+        .accountDTOList(accountDTOList)
+        .income(income)
+        .expenses(expenses)
+        .balance(balance)
         .token(TokenManager.createToken(user))
         .build();
   }
