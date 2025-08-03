@@ -6,6 +6,7 @@ import axios from "axios"
 import CategoryList from "../../components/categorylist/CategoryList"
 import {FiPlus} from "react-icons/fi"
 import CategoryModal from "../../components/category-modal/CategoryModal"
+import BACKEND_ADDRESS_URL from "../../services/backendAddress"
 
 const Caregories = () => {
     const [user, setUser] = useState()
@@ -21,7 +22,7 @@ const Caregories = () => {
     }, [])
 
     function getAllCategories() {
-        const url = `http://localhost:8000/category`
+        const url = `${BACKEND_ADDRESS_URL}/category`
         const token = localStorage.getItem("jwt")
         axios.get(url, {
             headers: {
@@ -34,7 +35,7 @@ const Caregories = () => {
     }
 
     function addCategory(category) {
-        const url = "http://localhost:8000/category"
+        const url = `${BACKEND_ADDRESS_URL}/category`
         const token = localStorage.getItem("jwt")
         axios.post(url, {
             ...category,

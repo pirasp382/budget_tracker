@@ -6,6 +6,7 @@ import AccountList from "../../components/accountlist/AccountList"
 import axios from "axios"
 import {FiPlus} from "react-icons/fi"
 import AccountModal from "../../components/accountmodal/AccountModal"
+import BACKEND_ADDRESS_URL from "../../services/backendAddress"
 
 const Accounts = () => {
 
@@ -29,7 +30,7 @@ const Accounts = () => {
     }
 
     function getAllAccounts(sortParam, direction) {
-        const url = `http://localhost:8000/account?sortParam=${sortParam}&direction=${direction}`
+        const url = `${BACKEND_ADDRESS_URL}/account?sortParam=${sortParam}&direction=${direction}`
         const token = localStorage.getItem("jwt")
         axios.get(url, {
             headers: {
@@ -42,7 +43,7 @@ const Accounts = () => {
     }
 
     function deleteAccounts() {
-        const url = "http://localhost:8000/account"
+        const url = `${BACKEND_ADDRESS_URL}/account`
         const token = localStorage.getItem("jwt")
         axios.delete(url, {
             data: selected,
@@ -59,7 +60,7 @@ const Accounts = () => {
     }
 
     function saveEdits(newAccount) {
-        const url = `http://localhost:8000/account/${newAccount.id}`
+        const url = `${BACKEND_ADDRESS_URL}/account/${newAccount.id}`
         const token = localStorage.getItem("jwt")
         axios.put(url, {
             ...newAccount,
@@ -75,7 +76,7 @@ const Accounts = () => {
     }
 
     function addAccount(account) {
-        const url = "http://localhost:8000/account"
+        const url = `${BACKEND_ADDRESS_URL}/account`
         const token = localStorage.getItem("jwt")
         axios.post(url, {
             ...account,

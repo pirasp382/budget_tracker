@@ -6,6 +6,7 @@ import {FiPlus, FiUpload} from "react-icons/fi"
 import TransactionList from "../../components/transactionlist/TransactionList"
 import PopUpContainer from "../../components/pop-up/PopUpContainer"
 import SideModal from "../../components/side-modal/SideModal"
+import BACKEND_ADDRESS_URL from "../../services/backendAddress"
 
 const Transactions = () => {
     const [user, setUser] = useState()
@@ -35,7 +36,7 @@ const Transactions = () => {
     }, [])
 
     function getCategories() {
-        const url = "http://localhost:8000/category"
+        const url = `${BACKEND_ADDRESS_URL}/category`
         const token = localStorage.getItem("jwt")
         axios.get(url, {
             headers: {
@@ -48,7 +49,7 @@ const Transactions = () => {
     }
 
     function saveEdits(transaction) {
-        const url = `http://localhost:8000/transaction/${transaction.id}`
+        const url = `${BACKEND_ADDRESS_URL}/transaction/${transaction.id}`
         const token = localStorage.getItem("jwt")
         axios.put(url, {
             ...transaction,
@@ -63,7 +64,7 @@ const Transactions = () => {
     }
 
     function deleteTransactions() {
-        const url = "http://localhost:8000/transaction"
+        const url = `${BACKEND_ADDRESS_URL}/transaction`
         const token = localStorage.getItem("jwt")
         axios.delete(url, {
             data: selected,
@@ -80,7 +81,7 @@ const Transactions = () => {
     }
 
     function addNewTransaction(transaction, account_id) {
-        const url = `http://localhost:8000/transaction?accountId=${account_id}`
+        const url = `${BACKEND_ADDRESS_URL}/transaction?accountId=${account_id}`
         const token = localStorage.getItem("jwt")
         axios.post(url, {
             ...transaction,
@@ -96,7 +97,7 @@ const Transactions = () => {
     }
 
     function getAccounts() {
-        const url = "http://localhost:8000/account"
+        const url = `${BACKEND_ADDRESS_URL}/account`
         const token = localStorage.getItem("jwt")
         axios.get(url, {
             headers: {
@@ -108,7 +109,7 @@ const Transactions = () => {
     }
 
     function getAllTransactions(sortParam, direction) {
-        const url = `http://localhost:8000/transaction?sortParam=${sortParam}&direction=${direction}`
+        const url = `${BACKEND_ADDRESS_URL}/transaction?sortParam=${sortParam}&direction=${direction}`
         const token = localStorage.getItem("jwt")
         axios.get(url, {
             headers: {

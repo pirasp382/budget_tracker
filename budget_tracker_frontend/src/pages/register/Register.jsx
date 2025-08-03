@@ -4,6 +4,7 @@ import {useState} from "react"
 import axios from "axios"
 import {useNavigate} from "react-router-dom"
 import PopUpContainer from "../../components/pop-up/PopUpContainer"
+import BACKEND_ADDRESS_URL from "../../services/backendAddress"
 
 function Register({setIsLoggedIn}) {
     const navigate = useNavigate()
@@ -57,7 +58,7 @@ function Register({setIsLoggedIn}) {
     function login(e) {
         e.preventDefault()
         setLoading(true)
-        const login_url = "http://localhost:8000/login"
+        const login_url = `${BACKEND_ADDRESS_URL}/login`
         axios
             .post(login_url, {
                 username: username,
@@ -77,7 +78,7 @@ function Register({setIsLoggedIn}) {
 
     function submit(e) {
         e.preventDefault()
-        const signup_url = "http://localhost:8000/registration"
+        const signup_url = `${BACKEND_ADDRESS_URL}/registration`
 
         if (!username || !email || !password || !confirmedPassword) {
             setError((prev) => ({...prev, general: "Please fill all required fields"}))

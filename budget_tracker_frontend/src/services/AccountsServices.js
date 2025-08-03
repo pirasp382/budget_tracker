@@ -1,6 +1,7 @@
 import axios from "axios"
+import BACKEND_ADDRESS_URL from "./backendAddress"
 
-const backendAddress = 'http://localhost:8000'
+const backendAddress = BACKEND_ADDRESS_URL;
 
 export const getAllAccountsAPICall = (sortParam, direction) => {
     const url = `${backendAddress}/account?sortParam=${sortParam}&direction=${direction}`

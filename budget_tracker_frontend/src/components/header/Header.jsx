@@ -40,7 +40,7 @@ const Header = ({username, site}) => {
                 <div className={"sub-title"}>
                     This is your financial Overview Report
                 </div>
-                <div className={"account-list-header"}>
+                {false && <div className={"account-list-header"}>
                     <div>
                         <select value={filter} onChange={event => {
                             handleFilteredAccount(event.target.value)
@@ -53,7 +53,7 @@ const Header = ({username, site}) => {
                             <button onClick={resetFilter}>reset filter</button>
                         </div>
                     </div>
-                </div>
+                </div>}
             </div>
         </div>
     )
