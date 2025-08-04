@@ -64,7 +64,7 @@ const AccountModal = ({account, isOpen, addAccount, saveEdits}) => {
                               onChange={(e) => setDescription(e.target.value)}/>
                 </label>
                 {account ? <button type="button" onClick={handleSave}>Save changes</button> :
-                    <button type="submit">Add a transaction</button>}
+                    <button type="submit">Add an Account</button>}
 
             </form>
         </div>
