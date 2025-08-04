@@ -34,7 +34,7 @@ CREATE TABLE `transaction`
     `date`        DATE                        NOT NULL DEFAULT current_timestamp,
     created_date	DATETIME							NOT NULL DEFAULT CURRENT_TIMESTAMP,
     account_id    bigint                      not null,
-    type          enum ('INCOME', 'EXPENSES') NOT NULL default 'INCOME',
+    type          int default 0,
     `category`		VARCHAR(100) 						NOT NULL DEFAULT 'others',
     foreign key (account_id) references account (id)
 );
