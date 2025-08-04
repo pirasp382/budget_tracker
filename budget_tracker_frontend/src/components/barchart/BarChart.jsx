@@ -42,10 +42,19 @@ const LineChart = ({incomeData, expensesData, history, timeType, setTimetype, ti
                 labels: allDates,
                 datasets: [
                     {
-                        label: "Income (€)",
-                        data: incomeValues,
+                        label: "History (€)",
+                        data: historyValues,
                         borderColor: "rgba(54, 162, 235, 1)",
                         backgroundColor: "rgba(54, 162, 235, 0.3)",
+                        fill: mainChartType === "area",
+                        tension: 0.3,
+                        yAxisID: "y1",
+                    },
+                    {
+                        label: "Income (€)",
+                        data: incomeValues,
+                        borderColor: "rgb(55,182,19)",
+                        backgroundColor: "rgba(55,182,19,0.3)",
                         fill: mainChartType === "area",
                         tension: 0.3,
                         yAxisID: "y",
@@ -58,15 +67,6 @@ const LineChart = ({incomeData, expensesData, history, timeType, setTimetype, ti
                         fill: mainChartType === "area",
                         tension: 0.3,
                         yAxisID: "y",
-                    },
-                    {
-                        label: "History (€)",
-                        data: historyValues,
-                        borderColor: "rgb(55,182,19)",
-                        backgroundColor: "rgba(55,182,19,0.3)",
-                        fill: mainChartType === "area",
-                        tension: 0.3,
-                        yAxisID: "y1",
                     },
 
                 ],
