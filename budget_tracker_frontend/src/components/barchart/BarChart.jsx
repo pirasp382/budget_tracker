@@ -35,6 +35,8 @@ const LineChart = ({incomeData, expensesData, history, timeType, setTimetype, ti
         const historyDates = Object.keys(history).sort()
         const historyValues = historyDates.map(date => history[date])
 
+        console.log(mainChartType)
+
 
         chartInstance.current = new Chart(chartContainer.current.getContext("2d"), {
             type: change(mainChartType),
@@ -77,7 +79,7 @@ const LineChart = ({incomeData, expensesData, history, timeType, setTimetype, ti
                 plugins: {
                     title: {
                         display: true,
-                        text: "Income & Expenses per Day" + mainChartType,
+                        text: `Income & Expenses per ${timeType}`,
                         font: {
                             size: 16,
                             weight: "bold",
