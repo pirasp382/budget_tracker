@@ -55,6 +55,23 @@ public interface BudgetTrackerResources {
 
   @Path("/userData")
   @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Operation(
+    summary = "get Userdata for Dashboard",
+    description = "get the Userdata(username, income, balance, outcome) for the dashboard page"
+  )
+  @APIResponse(
+    responseCode = "200",
+    description = "OK",
+    content = 
+        @Content(schema = @Schema(type = SchemaType.OBJECT, implementation =  UserOutput.class))
+  )
+  @APIResponse(
+    responseCode = "401",
+    description = "UNAUTHORIZED",
+    content = 
+        @Content(schema = @Schema(type = SchemaType.OBJECT, implementation =  UserOutput.class))
+  )
   Response getUserData(@HeaderParam("Authorization") final String token);
 
   @Path("/hello")
