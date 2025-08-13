@@ -16,11 +16,11 @@ public interface CategoryResources {
 
   @DELETE
   Response deleteCategory(
-      @HeaderParam("Authorization") final String token, @QueryParam("title") final String title);
+      @HeaderParam("Authorization") final String token, @QueryParam("id") final Long id);
 
   @PUT
   Response updateCategory(
       @HeaderParam("Authorization") final String token,
       final UpdateCategory category,
-      @QueryParam("title") final String title);
+      @QueryParam("id") final Long id);
 }
