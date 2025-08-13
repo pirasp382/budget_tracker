@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.util.ColorUtil;
 
 
 @Data
@@ -12,8 +11,9 @@ import org.example.util.ColorUtil;
 @AllArgsConstructor
 @Builder
 public class Category {
+  private Long id;
   private String title;
-  @Builder.Default private String description = "";
-  @Builder.Default private String color = ColorUtil.generateRandomColor();
-  @Builder.Default private String icon = "";
+  private String description;
+  private String color;
+  private String icon;
 }
