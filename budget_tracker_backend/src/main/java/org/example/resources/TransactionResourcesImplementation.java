@@ -1,10 +1,15 @@
 package org.example.resources;
 
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import jakarta.ws.rs.HeaderParam;
-import jakarta.ws.rs.core.Response;
-import org.example.dto.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.example.dto.GraphData;
+import org.example.dto.Message;
+import org.example.dto.TransactionDTO;
+import org.example.dto.UserOutput;
 import org.example.entity.Account;
 import org.example.entity.Transaction;
 import org.example.entity.User;
@@ -19,9 +24,9 @@ import org.example.services.validation.TransactionValidation;
 import org.example.util.TokenManager;
 import org.example.util.Util;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.*;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.Response;
 
 public class TransactionResourcesImplementation implements TransactionResources {
 
@@ -223,8 +228,7 @@ public class TransactionResourcesImplementation implements TransactionResources 
       AccountRepository.updateAccountAddAmount(transaction.getAccount(), transaction.getAmount());
     }
 
-    if (transactionDTO.getCategory() != null
-        && TransactionValidation.categoryExists(transactionDTO.getCategory(), user.getId())) {
+    if (transactionDTO.getCategory() != null) {
       transaction.setCategory(transactionDTO.getCategory());
     }
 

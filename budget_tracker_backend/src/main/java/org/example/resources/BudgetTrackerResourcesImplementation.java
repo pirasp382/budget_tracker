@@ -13,7 +13,6 @@ import org.example.repository.TransactionRepository;
 import org.example.repository.UserRepository;
 import org.example.services.validation.LoginValidation;
 import org.example.services.validation.RegistrationValidation;
-import org.example.util.CategoryStorage;
 import org.example.util.TokenManager;
 
 import java.math.BigDecimal;
@@ -32,7 +31,6 @@ public class BudgetTrackerResourcesImplementation implements BudgetTrackerResour
     }
     final User user = UserMapper.mapToUser(registrationInput);
     user.persist();
-    CategoryStorage.initializecategories(user.getId());
     final UserOutput output = UserMapper.mapToUserOutput(user);
     return Response.ok(output).build();
   }
