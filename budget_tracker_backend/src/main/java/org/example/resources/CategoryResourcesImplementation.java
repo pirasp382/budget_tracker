@@ -12,7 +12,6 @@ import org.example.entity.User;
 import org.example.mapper.CategoryMapper;
 import org.example.repository.CategoryRepository;
 import org.example.repository.UserRepository;
-import org.example.util.CategoryStorage;
 import org.example.util.TokenManager;
 
 import java.util.List;
